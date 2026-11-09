@@ -3,249 +3,144 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ondas Sonoras: o Jogo</title>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<title>Som: o básico do básico</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0a24;--bg2:#15123f;--card:#1a1850;--ink:#f1efff;--mut:#a9a4d6;--cy:#22d3ee;--vi:#a78bfa;--pk:#f472b6;--am:#fbbf24;--ok:#4ade80;--bad:#fb7185;--line:#ffffff22;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark}}
 @media(prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#f4f2ff;--bg2:#e6e1ff;--card:#fff;--ink:#1b1850;--mut:#585296;--line:#1b185022;--cy:#0891b2;--vi:#7c3aed;--pk:#db2777;--am:#b45309}}
 :root[data-theme=dark]{color-scheme:dark}
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 60px);scroll-behavior:smooth}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,var(--bg2),transparent),var(--bg);color:var(--ink);font:400 17px/1.6 "DM Sans",system-ui,sans-serif;overflow-x:hidden}
+body{margin:0;background:radial-gradient(1000px 500px at 80% -10%,var(--bg2),transparent),var(--bg);color:var(--ink);font:400 18px/1.6 "DM Sans",system-ui,sans-serif;overflow-x:hidden}
 h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.1;margin:0 0 .5em}
-h1{font-size:clamp(2.6rem,9vw,5.6rem);font-weight:800;letter-spacing:-.03em}
-h2{font-size:clamp(1.7rem,4.5vw,2.6rem);font-weight:800}
-h3{font-size:1.15rem}
-p{margin:.4em 0 1em;max-width:62ch}
-.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+h1{font-size:clamp(2.6rem,9vw,5rem);font-weight:800;letter-spacing:-.03em}
+h2{font-size:clamp(1.7rem,4.5vw,2.4rem);font-weight:800}
+p{margin:.4em 0 1em;max-width:60ch}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:60}
 nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;align-items:center;gap:14px;padding-top:10px;padding-bottom:10px}
-.hud{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-.lvl{font-weight:700;color:var(--am);white-space:nowrap;font-size:.95rem}
-.bar{flex:1;height:10px;border-radius:9px;background:var(--line);overflow:hidden;min-width:60px}
+nav .wrap{display:flex;align-items:center;gap:12px;padding-top:10px;padding-bottom:10px;font-weight:700}
+.lvl{color:var(--am);white-space:nowrap}
+.bar{flex:1;height:10px;border-radius:9px;background:var(--line);overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--pk));transition:width .5s}
-.xp{font-weight:700;white-space:nowrap;font-size:.95rem}
-.links{display:flex;gap:4px;overflow-x:auto}
-.links a{color:var(--mut);text-decoration:none;padding:4px 9px;border-radius:8px;font-size:.9rem;white-space:nowrap}
-.links a:hover,.links a:focus-visible{background:var(--line);color:var(--ink)}
-@media(max-width:760px){.links{display:none}}
-header.hero{padding:56px 0 40px;position:relative}
-.hero p{font-size:1.2rem;color:var(--mut)}
+.hero{padding:50px 0 30px}.hero p{font-size:1.2rem;color:var(--mut)}
 .hero h1 span{background:linear-gradient(90deg,var(--cy),var(--vi),var(--pk));-webkit-background-clip:text;background-clip:text;color:transparent}
 .cv{display:block;width:100%;border-radius:18px;background:#070718;border:1px solid var(--line)}
-button,.btn{font:700 1rem "DM Sans",sans-serif;border:0;border-radius:12px;padding:11px 18px;cursor:pointer;color:#0a0a24;background:linear-gradient(135deg,var(--cy),var(--vi));transition:transform .15s,box-shadow .15s}
-button:hover{transform:translateY(-2px);box-shadow:0 8px 22px #22d3ee44}
+button,.btn{font:700 1.05rem "DM Sans",sans-serif;border:0;border-radius:12px;padding:12px 20px;cursor:pointer;color:#0a0a24;background:linear-gradient(135deg,var(--cy),var(--vi));transition:transform .15s}
+button:hover{transform:translateY(-2px)}
 button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--am);outline-offset:2px}
-button.alt{background:var(--line);color:var(--ink)}
-button.pk{background:linear-gradient(135deg,var(--pk),var(--am))}
-section.fase{padding:56px 0;border-top:1px solid var(--line)}
+.fase{padding:48px 0;border-top:1px solid var(--line)}
 .tag{display:inline-block;font-weight:700;color:var(--bg);background:var(--cy);border-radius:999px;padding:3px 14px;font-size:.85rem;margin-bottom:12px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
-@media(max-width:800px){.grid{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin-top:16px}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
-label{display:flex;justify-content:space-between;font-weight:500;margin-top:10px;gap:10px}
+label{display:flex;justify-content:space-between;font-weight:500;margin-top:10px}
 label b{color:var(--cy)}
-input[type=range]{width:100%;accent-color:var(--pk);height:28px}
-.big{font:800 2.4rem "Bricolage Grotesque",sans-serif;color:var(--am)}
-.note{border-left:4px solid var(--vi);padding:8px 14px;background:var(--line);border-radius:0 12px 12px 0;color:var(--ink);margin:14px 0}
-.fact{color:var(--mut);font-size:.95rem}
-table{width:100%;border-collapse:collapse}
-td{padding:8px 4px;border-bottom:1px solid var(--line)}
-td:last-child{width:55%}
-.m{height:12px;border-radius:8px;background:linear-gradient(90deg,var(--cy),var(--vi))}
+input[type=range]{width:100%;accent-color:var(--pk);height:30px}
+.note{border-left:4px solid var(--vi);padding:8px 14px;background:var(--line);border-radius:0 12px 12px 0;margin:14px 0}
 .opts{display:grid;gap:10px;margin-top:12px}
 .opt{text-align:left;background:var(--line);color:var(--ink)}
-.opt.right{background:var(--ok);color:#052}
-.opt.wrong{background:var(--bad);color:#300}
-.db{display:flex;flex-wrap:wrap;gap:8px}
-.db button{background:var(--line);color:var(--ink);font-weight:500;padding:8px 12px}
-.db button.on{background:var(--pk);color:#fff}
+.opt.right{background:var(--ok);color:#052}.opt.wrong{background:var(--bad);color:#300}
+.mid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.mid div{background:var(--line);border-radius:14px;padding:14px 6px;font-size:2rem}
+.mid small{display:block;font-size:.95rem;color:var(--mut)}
+.mid b{display:block;font-size:1rem;color:var(--cy)}
+#flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:80;transition:opacity .4s}
 #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);transform:translate(-50%,120px);background:var(--am);color:#2a1a00;font-weight:800;padding:12px 22px;border-radius:14px;transition:transform .35s;z-index:70;pointer-events:none}
 #toast.show{transform:translate(-50%,0)}
 .badge{font-size:4rem;text-align:center}
-footer{padding:40px 0 60px;text-align:center;color:var(--mut);border-top:1px solid var(--line)}
+footer{padding:36px 0 56px;text-align:center;color:var(--mut);border-top:1px solid var(--line)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<nav><div class="wrap">
-<div class="hud"><span class="lvl" id="lvl">Nível 1 · Ouvinte</span><div class="bar"><i id="xpbar"></i></div><span class="xp"><span id="xp">0</span> XP</span></div>
-<div class="links"><a href="#f1">Som</a><a href="#f2">Laboratório</a><a href="#f3">Velocidade</a><a href="#f4">Espectro</a><a href="#f5">Acústica</a><a href="#f6">Quiz</a></div>
-</div></nav>
+<div id="flash"></div>
+<nav><div class="wrap"><span class="lvl" id="lvl">Nível 1 · Ouvinte</span><div class="bar"><i id="xpbar"></i></div><span><span id="xp">0</span> XP</span></div></nav>
 
 <header class="hero"><div class="wrap">
-<h1>Ondas sonoras,<br><span>o jogo</span></h1>
-<p>Você vai ouvir, mexer e descobrir como o som viaja, por que existem sons agudos e graves e como a acústica molda o que escutamos. Complete as fases para ganhar XP. Use fones ou aumente o volume com cuidado.</p>
-<canvas class="cv" id="hero" style="height:170px" aria-label="Onda sonora animada"></canvas>
-<div class="row"><a href="#f1" class="btn" style="text-decoration:none">Começar fase 1</a></div>
+<h1>Som: o <span>básico do básico</span></h1>
+<p>Quatro fases rápidas para entender o que é o som. Mexa, ouça e ganhe XP. Use fones ou aumente o volume com cuidado.</p>
+<canvas class="cv" id="hero" style="height:140px" aria-label="Onda sonora animada"></canvas>
 </div></header>
 
-<section class="fase" id="f1"><div class="wrap">
+<section class="fase"><div class="wrap">
 <span class="tag">Fase 1</span><h2>O que é o som?</h2>
-<div class="grid"><div>
-<p>Som é uma <b>onda mecânica longitudinal</b>: uma vibração que passa de partícula em partícula. A fonte (alto-falante, corda vocal) empurra o ar, criando zonas de <b style="color:var(--cy)">compressão</b> (partículas juntas) e <b style="color:var(--pk)">rarefação</b> (partículas afastadas). A energia viaja, o ar não vai junto.</p>
-<p>Por ser mecânica, a onda precisa de um meio material: sólido, líquido ou gás.</p>
-<div class="row"><button id="vac">Tirar o ar (fazer vácuo)</button></div>
-<div class="note" id="vacnote">Cada ponto é uma molécula de ar. Veja as faixas claras e escuras se movendo.</div>
-</div>
-<div><canvas class="cv" id="c1" style="height:260px" aria-label="Partículas de ar vibrando"></canvas></div></div>
+<p>Som é uma <b>vibração</b>. Quando algo vibra, empurra o ar, e o ar empurra o ar vizinho. Assim a vibração <b>viaja</b> até o seu ouvido. Isso é uma <b>onda sonora</b>.</p>
+<canvas class="cv" id="c1" style="height:230px" aria-label="Partículas de ar vibrando"></canvas>
+<div class="row"><button id="vac">Tirar o ar</button></div>
+<div class="note" id="vacnote">Cada ponto é uma partícula de ar. Veja a vibração passando.</div>
 </div></section>
 
-<section class="fase" id="f2"><div class="wrap">
-<span class="tag">Fase 2</span><h2>Laboratório da onda</h2>
-<p>Duas propriedades definem o que você ouve: a <b>frequência</b> (Hz, ciclos por segundo) controla se o som é grave ou agudo; a <b>amplitude</b> controla a intensidade (volume).</p>
-<div class="grid">
+<section class="fase"><div class="wrap">
+<span class="tag">Fase 2</span><h2>Grave, agudo, fraco e forte</h2>
+<p><b>Frequência</b>: quantas vibrações por segundo. Mais vibrações = som mais <b>agudo</b>. Menos = mais <b>grave</b>.<br><b>Amplitude</b>: o tamanho da vibração. Maior = som mais <b>forte</b>.</p>
 <div class="card">
-<canvas class="cv" id="c2" style="height:200px" aria-label="Onda senoidal ajustável"></canvas>
-<label>Frequência <b id="fv">440 Hz</b></label><input type="range" id="f" min="100" max="1500" value="440">
-<label>Amplitude <b id="av">50%</b></label><input type="range" id="a" min="0" max="100" value="50">
-<div class="row"><button id="play">Tocar som</button><span class="fact" id="nota"></span></div>
-<p class="fact">Período T = 1 / f. A 440 Hz, T ≈ 2,3 ms. O comprimento de onda no ar é λ = v / f ≈ 0,78 m.</p>
-</div>
-<div class="card">
-<h3>Desafio: afine o diapasão</h3>
-<p>Ouça o tom-alvo e mexa na frequência até igualar de ouvido. Precisa chegar a 4% do alvo.</p>
-<div class="row"><button class="pk" id="tgt">Ouvir tom-alvo</button><button class="alt" id="chk">Conferir meu tom</button></div>
-<div class="big" id="res">?</div>
-<p class="fact" id="resm">Clique em “Ouvir tom-alvo” para sortear.</p>
-</div></div>
-</div></section>
-
-<section class="fase" id="f3"><div class="wrap">
-<span class="tag">Fase 3</span><h2>Velocidade do som</h2>
-<p>A velocidade depende do meio. Em geral, quanto mais rígido e denso o meio, mais rápido o som viaja: sólidos > líquidos > gases. No ar a 20 °C, v ≈ 343 m/s e aumenta com a temperatura.</p>
-<div class="grid">
-<div class="card"><h3>Velocidade em cada meio (m/s)</h3>
-<table id="tab"></table><p class="fact">Valores aproximados. No vácuo: não há propagação.</p></div>
-<div class="card"><h3>Calculadora do trovão</h3>
-<p>A luz chega quase na hora; o som demora. Distância = v × tempo.</p>
-<label>Tempo entre raio e trovão <b id="tv">3 s</b></label><input type="range" id="t" min="1" max="15" step="0.5" value="3">
-<div class="big" id="dist">1,03 km</div>
-<div class="note"><b>Missão:</b> você vê o raio e ouve o trovão 6 s depois. A que distância caiu?
-<div class="opts" id="m3"></div></div></div></div>
-</div></section>
-
-<section class="fase" id="f4"><div class="wrap">
-<span class="tag">Fase 4</span><h2>O espectro sonoro</h2>
-<p>Humanos ouvem de cerca de 20 Hz a 20 000 Hz. Abaixo é <b>infrassom</b>, acima é <b>ultrassom</b>. Arraste e visite as três zonas para completar a fase.</p>
-<div class="card">
-<label>Frequência <b id="sv">440 Hz</b></label><input type="range" id="s" min="0" max="500" value="262" aria-label="Frequência em escala logarítmica">
-<div class="row"><div class="big" id="semo">🎵</div><div><h3 id="stit" style="margin:0"></h3><span class="fact" id="sdesc"></span></div></div>
-<div class="row"><button class="alt" id="splay">Ouvir esta frequência</button></div>
-<p class="fact">A escala é logarítmica: cada passo multiplica a frequência. Seu alto-falante pode não reproduzir sons muito graves ou muito agudos.</p>
+<canvas class="cv" id="c2" style="height:180px" aria-label="Onda ajustável"></canvas>
+<label>Frequência <b id="fv"></b></label><input type="range" id="f" min="100" max="1200" value="300">
+<label>Amplitude <b id="av"></b></label><input type="range" id="a" min="0" max="100" value="50">
+<div class="row"><button id="play">Tocar som</button></div>
 </div>
 </div></section>
 
-<section class="fase" id="f5"><div class="wrap">
-<span class="tag">Fase 5</span><h2>Acústica na prática</h2>
-<div class="card" style="margin-bottom:20px"><h3>Efeito Doppler</h3>
-<p>Quando a fonte se move, as ondas se apertam à frente (som mais agudo) e se esticam atrás (mais grave). Passando de Mach 1, as ondas formam o cone do estrondo sônico.</p>
-<canvas class="cv" id="c5" style="height:230px" aria-label="Simulação do efeito Doppler"></canvas>
-<label>Velocidade da fonte <b id="mv">Mach 0,5</b></label><input type="range" id="mach" min="0" max="150" value="50">
-</div>
-<div class="grid">
-<div class="card"><h3>Eco ou reverberação?</h3>
-<p>O cérebro separa dois sons se chegarem com mais de ~0,1 s de diferença.</p>
-<label>Distância até a parede <b id="dv">10 m</b></label><input type="range" id="d" min="1" max="60" value="10">
-<div class="big" id="et">58 ms</div><div class="note" id="ev"></div></div>
-<div class="card"><h3>Nível sonoro (dB)</h3>
-<p>A escala é logarítmica: +10 dB = 10× mais intensidade. Toque nos sons.</p>
-<div class="db" id="dbs"></div>
-<div class="bar" style="margin-top:16px;height:16px"><i id="dbbar"></i></div>
-<div class="note" id="dbn">A partir de 85 dB, a exposição prolongada pode lesar a audição.</div></div>
-</div>
-<div class="grid" style="margin-top:20px">
-<div class="card"><h3>Ressonância</h3><p>Todo objeto tem frequências naturais. Se a onda externa bate numa delas, a vibração cresce: é assim que uma taça de vidro pode quebrar com uma nota e que um violão amplifica as cordas.</p></div>
-<div class="card"><h3>Isolar, absorver, refletir</h3><p>Superfícies duras refletem (eco); materiais porosos como espuma, cortinas e carpete absorvem. Salas de concerto equilibram reflexão e absorção para o som ficar rico, mas nítido.</p></div>
-</div>
+<section class="fase"><div class="wrap">
+<span class="tag">Fase 3</span><h2>O som é rápido?</h2>
+<p>O som viaja rápido, mas a luz é muito mais. Por isso você vê o raio <b>antes</b> de ouvir o trovão. O som precisa de um meio para viajar e é mais veloz em sólidos do que em gases.</p>
+<div class="mid"><div>💨<b>Ar</b><small>343 m/s</small></div><div>💧<b>Água</b><small>1 480 m/s</small></div><div>🔩<b>Aço</b><small>5 900 m/s</small></div></div>
+<div class="card"><h3>Jogo do trovão</h3>
+<p>Escolha a distância da tempestade e clique em “Raio!”. O trovão demora cerca de 3 s por quilômetro.</p>
+<label>Distância <b id="kv">2 km</b></label><input type="range" id="k" min="1" max="3" step="1" value="2">
+<div class="row"><button id="ray">⚡ Raio!</button><span id="tmsg"></span></div></div>
 </div></section>
 
-<section class="fase" id="f6"><div class="wrap">
-<span class="tag">Fase final</span><h2>Quiz do mestre do som</h2>
+<section class="fase"><div class="wrap">
+<span class="tag">Fase 4</span><h2>Eco</h2>
+<p>Eco é o som que bate numa parede e <b>volta</b> para você. Para ouvir o eco separado, a parede precisa estar a mais de uns 17 metros.</p>
+<div class="card"><label>Distância até a parede <b id="dv"></b></label><input type="range" id="d" min="2" max="40" value="10">
+<div class="note" id="ev"></div></div>
+</div></section>
+
+<section class="fase"><div class="wrap">
+<span class="tag">Quiz</span><h2>Teste final</h2>
 <div class="card" id="quiz"></div>
 </div></section>
-
-<footer><div class="wrap">Feito para aprender som. Bom seminário! 🔊</div></footer>
+<footer><div class="wrap">Bom seminário! 🔊</div></footer>
 <div id="toast" role="status"></div>
 
 <script>
-const $=s=>document.querySelector(s),LV=["Ouvinte","Aprendiz","Técnico","Engenheiro","Mestre do Som"],MAX=250;
+const $=s=>document.querySelector(s),LV=["Ouvinte","Aprendiz","Técnico","Mestre do Som"],MAX=100;
 let xp=0,done={};
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("show"),2200)}
-function award(k,n,m){if(done[k])return;done[k]=1;xp+=n;$("#xp").textContent=xp;$("#xpbar").style.width=Math.min(100,xp/MAX*100)+"%";const l=Math.min(4,Math.floor(xp/55));$("#lvl").textContent="Nível "+(l+1)+" · "+LV[l];toast("+"+n+" XP  "+(m||""))}
+function award(k,n,m){if(done[k])return;done[k]=1;xp+=n;$("#xp").textContent=xp;$("#xpbar").style.width=Math.min(100,xp/MAX*100)+"%";const l=Math.min(3,Math.floor(xp/30));$("#lvl").textContent="Nível "+(l+1)+" · "+LV[l];toast("+"+n+" XP  "+(m||""))}
 let ac,live;
 function ctx(){ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state=="suspended")ac.resume();return ac}
-function tone(f,dur,vol){const a=ctx(),o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.setValueAtTime(0,a.currentTime);g.gain.linearRampToValueAtTime(vol,a.currentTime+.03);g.gain.linearRampToValueAtTime(0,a.currentTime+dur);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+dur+.05)}
 function fit(c){const r=devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;if(c.width!=w*r){c.width=w*r;c.height=h*r}const x=c.getContext("2d");x.setTransform(r,0,0,r,0,0);return[x,w,h]}
-const cvs={hero:$("#hero"),c1:$("#c1"),c2:$("#c2"),c5:$("#c5")};
 
-/* Fase 1 */
 let vac=0,vacT=0;
-$("#vac").onclick=()=>{vacT=vacT?0:1;$("#vac").textContent=vacT?"Devolver o ar":"Tirar o ar (fazer vácuo)";$("#vacnote").textContent=vacT?"Sem partículas, nada vibra e nada propaga. É por isso que no espaço não se ouve som.":"Cada ponto é uma molécula de ar. Veja as faixas claras e escuras se movendo.";if(vacT)award("vac",20,"Som precisa de meio!")};
-function d1(t){const[x,w,h]=fit(cvs.c1);x.clearRect(0,0,w,h);vac+=(vacT-vac)*.04;const amp=1-vac,N=44,R=7,k=2*Math.PI/150,sp=40;
-x.fillStyle="#f472b6";x.globalAlpha=.9;x.fillRect(0,h/2-30*(1-vac*.0)-0,0,0);
-const p=Math.sin(t*.012)*5*amp;x.fillStyle="#a78bfa";x.beginPath();x.roundRect(6+p,h/2-50,16,100,6);x.fill();
-for(let r=0;r<R;r++)for(let i=0;i<N;i++){const x0=40+i*((w-60)/N),y=(r+.7)*h/(R+.4),ph=k*x0-t*.012*1.2,d=Math.sin(ph)*14*amp,c=Math.cos(ph)*amp;
-x.fillStyle=`hsl(${190-c*60+ (c<0?100:0)},90%,${60+c*-12}%)`;x.globalAlpha=.55+.4*Math.max(0,-c);x.beginPath();x.arc(x0+d,y,3.2+(-c)*1.6*amp,0,7);x.fill()}
-x.globalAlpha=1;x.fillStyle="#a9a4d6";x.font="13px DM Sans";x.fillText("compressão = mais partículas juntas",w-230,h-10)}
+$("#vac").onclick=()=>{vacT=vacT?0:1;$("#vac").textContent=vacT?"Devolver o ar":"Tirar o ar";$("#vacnote").textContent=vacT?"Sem ar, nada vibra e o som não viaja. Por isso no espaço não há som.":"Cada ponto é uma partícula de ar. Veja a vibração passando.";if(vacT)award("vac",20,"Som precisa de ar!")};
+function d1(t){const[x,w,h]=fit($("#c1"));x.clearRect(0,0,w,h);vac+=(vacT-vac)*.04;const amp=1-vac,N=40,R=6,k=2*Math.PI/150;
+x.fillStyle="#a78bfa";x.beginPath();x.roundRect(6+Math.sin(t*.0144)*5*amp,h/2-45,16,90,6);x.fill();
+for(let r=0;r<R;r++)for(let i=0;i<N;i++){const x0=40+i*((w-60)/N),y=(r+.7)*h/(R+.4),ph=k*x0-t*.0144,c=Math.cos(ph)*amp;
+x.fillStyle=`hsl(${190-c*60},90%,${60-c*12}%)`;x.globalAlpha=.55+.4*Math.max(0,-c);x.beginPath();x.arc(x0+Math.sin(ph)*14*amp,y,3.2+(-c)*1.6*amp,0,7);x.fill()}x.globalAlpha=1}
+function dh(t){const[x,w,h]=fit($("#hero"));x.clearRect(0,0,w,h);for(let l=0;l<3;l++){x.beginPath();for(let i=0;i<=w;i+=3){const y=h/2+Math.sin(i*.02*(1+l*.5)-t*.004*(1+l))*(h*.3)/(1+l*.6)*Math.sin(i*.004+t*.001);i?x.lineTo(i,y):x.moveTo(i,y)}x.strokeStyle=["#22d3ee","#a78bfa","#f472b6"][l];x.lineWidth=3;x.stroke()}}
 
-/* Hero */
-function dh(t){const[x,w,h]=fit(cvs.hero);x.clearRect(0,0,w,h);for(let l=0;l<3;l++){x.beginPath();for(let i=0;i<=w;i+=3){const y=h/2+Math.sin(i*.02*(1+l*.5)-t*.004*(1+l))*(h*.32)/(1+l*.6)*Math.sin(i*.004+t*.001);i?x.lineTo(i,y):x.moveTo(i,y)}x.strokeStyle=["#22d3ee","#a78bfa","#f472b6"][l];x.lineWidth=3;x.stroke()}}
-
-/* Fase 2 */
 const F=$("#f"),A=$("#a");
-const nomes=["Dó","Dó#","Ré","Ré#","Mi","Fá","Fá#","Sol","Sol#","Lá","Lá#","Si"];
-function nota(f){const n=Math.round(12*Math.log2(f/440))+69;return nomes[((n%12)+12)%12]+Math.floor(n/12-1)}
-function upd2(){$("#fv").textContent=F.value+" Hz";$("#av").textContent=A.value+"%";$("#nota").textContent="Nota mais próxima: "+nota(+F.value);if(live){live.o.frequency.value=+F.value;live.g.gain.value=A.value/100*.25}}
-F.oninput=A.oninput=()=>{upd2();award("lab",15,"Você mexeu na onda!")};
+function upd2(){$("#fv").textContent=F.value+" Hz ("+(F.value<400?"grave":F.value<800?"médio":"agudo")+")";$("#av").textContent=A.value+"% ("+(A.value<35?"fraco":A.value<70?"médio":"forte")+")";if(live){live.o.frequency.value=+F.value;live.g.gain.value=A.value/100*.25}}
+F.oninput=A.oninput=()=>{upd2();award("lab",20,"Você mexeu na onda!")};
 $("#play").onclick=function(){if(live){live.o.stop();live=null;this.textContent="Tocar som";return}const a=ctx(),o=a.createOscillator(),g=a.createGain();o.frequency.value=+F.value;g.gain.value=A.value/100*.25;o.connect(g).connect(a.destination);o.start();live={o,g};this.textContent="Parar som"};
-function d2(t){const[x,w,h]=fit(cvs.c2);x.clearRect(0,0,w,h);const f=+F.value,a=A.value/100,cyc=f/150;x.strokeStyle="#ffffff22";x.beginPath();x.moveTo(0,h/2);x.lineTo(w,h/2);x.stroke();
-const g=x.createLinearGradient(0,0,w,0);g.addColorStop(0,"#22d3ee");g.addColorStop(1,"#f472b6");x.strokeStyle=g;x.lineWidth=3;x.beginPath();for(let i=0;i<=w;i+=2){const y=h/2-Math.sin(i/w*cyc*6.283-t*.01*Math.min(3,f/300))*a*(h/2-10);i?x.lineTo(i,y):x.moveTo(i,y)}x.stroke()}
-let target=0;
-$("#tgt").onclick=()=>{if(!target)target=Math.round(200+Math.random()*1000);tone(target,1.2,.2);$("#resm").textContent="Mexa o controle de frequência e confira quando achar que acertou."};
-$("#chk").onclick=()=>{if(!target){$("#resm").textContent="Primeiro ouça o tom-alvo.";return}const e=Math.abs(F.value-target)/target;$("#res").textContent=target+" Hz";if(e<=.04){$("#resm").textContent="Acertou! Seu ouvido está afinado. Diferença de "+(e*100).toFixed(1).replace(".",",")+"%.";award("tune",30,"Ouvido absoluto!");target=0}else $("#resm").textContent="Você escolheu "+F.value+" Hz, "+(F.value<target?"abaixo":"acima")+" do alvo. Tente outro sorteio.";if(e>.04)target=0;$("#res").textContent=e<=.04?"✔ "+$("#res").textContent:"✘"};
+function d2(t){const[x,w,h]=fit($("#c2"));x.clearRect(0,0,w,h);const f=+F.value,a=A.value/100,cyc=f/150;const g=x.createLinearGradient(0,0,w,0);g.addColorStop(0,"#22d3ee");g.addColorStop(1,"#f472b6");x.strokeStyle=g;x.lineWidth=3;x.beginPath();for(let i=0;i<=w;i+=2){const y=h/2-Math.sin(i/w*cyc*6.283-t*.01*Math.min(3,f/300))*a*(h/2-10);i?x.lineTo(i,y):x.moveTo(i,y)}x.stroke()}
 
-/* Fase 3 */
-const meios=[["Ar (20 °C)",343],["Água doce",1480],["Água do mar",1530],["Madeira (carvalho)",3800],["Aço",5900]];
-$("#tab").innerHTML=meios.map(m=>`<tr><td>${m[0]}</td><td><div class="m" style="width:${m[1]/5900*100}%"></div><small class="fact">${m[1].toLocaleString("pt-BR")}</small></td></tr>`).join("");
-$("#t").oninput=()=>{const s=+$("#t").value,d=343*s;$("#tv").textContent=String(s).replace(".",",")+" s";$("#dist").textContent=d>=1000?(d/1000).toFixed(2).replace(".",",")+" km":Math.round(d)+" m";award("trov",10,"Calculando distâncias!")};$("#t").oninput();
-$("#m3").innerHTML=["600 m","2 km","6 km"].map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("");
-$("#m3").onclick=e=>{const b=e.target.closest(".opt");if(!b)return;const r=b.dataset.i==1;b.classList.add(r?"right":"wrong");if(r)award("miss",25,"343 × 6 ≈ 2 km")};
+$("#k").oninput=()=>$("#kv").textContent=$("#k").value+" km";
+$("#ray").onclick=function(){const km=+$("#k").value,s=km*3,fl=$("#flash");this.disabled=true;fl.style.opacity=.9;setTimeout(()=>fl.style.opacity=0,120);$("#tmsg").textContent="Contando… ouça o trovão";
+setTimeout(()=>{const a=ctx(),n=a.sampleRate*2,b=a.createBuffer(1,n,a.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);const src=a.createBufferSource(),lp=a.createBiquadFilter();lp.frequency.value=300;src.buffer=b;src.connect(lp).connect(a.destination);src.start();$("#tmsg").textContent="Trovão! Chegou "+s+" s depois do raio.";$("#ray").disabled=false;award("ray",20,"A luz chega primeiro!")},s*1000)};
 
-/* Fase 4 */
-const zonas=[[20,"Infrassom","🐘","Abaixo de 20 Hz. Elefantes e baleias se comunicam aqui; terremotos e vento forte também geram infrassom."],[20000,"Faixa audível humana","🧑","De 20 Hz a 20 kHz. A voz humana fica em torno de 85 a 255 Hz (fundamental) e a sensibilidade é maior entre 2 e 5 kHz."],[1e9,"Ultrassom","🦇","Acima de 20 kHz. Morcegos e golfinhos usam para ecolocalização; humanos usam em ultrassonografia e limpeza de joias."]];
-let sf=262,vis={};
-function sup(){sf=Math.round(Math.pow(10,.3+$("#s").value/500*4.7));const z=zonas.find(z=>sf<z[0])||zonas[2],zi=zonas.indexOf(z);$("#sv").textContent=sf.toLocaleString("pt-BR")+" Hz";$("#stit").textContent=z[1];$("#semo").textContent=z[2];$("#sdesc").textContent=z[3];vis[zi]=1;if(Object.keys(vis).length==3)award("spec",30,"Espectro completo!")}
-$("#s").oninput=sup;sup();vis={};
-$("#splay").onclick=()=>{tone(Math.min(sf,18000),1,.15);if(sf>18000||sf<30)toast("Talvez você não ouça nada, e tudo bem!")};
+$("#d").oninput=()=>{const m=+$("#d").value;$("#dv").textContent=m+" m";$("#ev").textContent=m>=17?"Você ouve o eco, separado do seu grito.":"Muito perto: o som volta rápido demais e se mistura com o original.";award("eco",20,"Eco entendido!")};$("#d").oninput();done={};
 
-/* Fase 5: Doppler */
-let waves=[],sx=0,lastE=0,lastT=0;
-$("#mach").oninput=()=>{$("#mv").textContent="Mach "+($("#mach").value/100).toFixed(2).replace(".",",");if($("#mach").value>110)award("dop",25,"Estrondo sônico!");else award("dop0",5)};
-function d5(t){const[x,w,h]=fit(cvs.c5);const dt=Math.min(.05,(t-lastT)/1000||0);lastT=t;const c=110,M=$("#mach").value/100;x.clearRect(0,0,w,h);
-sx+=M*c*dt;if(sx>w+30){sx=-30;waves=[]}lastE+=dt;if(lastE>.1){waves.push({x:sx,t:0});lastE=0}
-x.lineWidth=1.5;waves=waves.filter(v=>(v.t+=dt)*c<w);waves.forEach(v=>{x.strokeStyle=`rgba(34,211,238,${1-v.t*c/w})`;x.beginPath();x.arc(v.x,h/2,v.t*c,0,7);x.stroke()});
-if(M>1){x.strokeStyle="#f472b6";x.lineWidth=2.5;const a=Math.asin(1/M),L=h;x.beginPath();x.moveTo(sx-Math.cos(a)*L,h/2-Math.sin(a)*L);x.lineTo(sx,h/2);x.lineTo(sx-Math.cos(a)*L,h/2+Math.sin(a)*L);x.stroke()}
-x.font="26px serif";x.fillText("✈️",sx-14,h/2+9);x.fillStyle="#a9a4d6";x.font="13px DM Sans";x.fillText("ouvinte aqui: som mais agudo",w-190,22);x.fillText("ouvinte aqui: som mais grave",6,22)}
-
-/* Eco */
-$("#d").oninput=()=>{const m=+$("#d").value,t=2*m/343;$("#dv").textContent=m+" m";$("#et").textContent=Math.round(t*1000)+" ms";$("#ev").textContent=t>=.1?"Eco: o som refletido chega separado do original. Distância mínima ≈ 17 m.":"Reverberação: o som refletido se mistura ao original e o prolonga.";award("eco",15,"Eco medido!")};$("#d").oninput();done={};
-const dbs=[["Sussurro",30],["Conversa",60],["Trânsito",80],["Liquidificador",90],["Show de rock",110],["Turbina de avião",130]];
-$("#dbs").innerHTML=dbs.map((d,i)=>`<button data-i="${i}">${d[0]}</button>`).join("");let seen={};
-$("#dbs").onclick=e=>{const b=e.target.closest("button");if(!b)return;document.querySelectorAll("#dbs button").forEach(x=>x.classList.remove("on"));b.classList.add("on");const d=dbs[b.dataset.i];$("#dbbar").style.width=d[1]/140*100+"%";$("#dbn").textContent=d[0]+": "+d[1]+" dB. "+(d[1]>=85?"Acima de 85 dB: use proteção auditiva e limite o tempo de exposição.":"Nível seguro para exposição normal.");seen[d[0]]=1;if(Object.keys(seen).length>=4)award("db",20,"Mestre dos decibéis!")};
-
-/* Quiz */
-const Q=[["O som se propaga em qual tipo de onda?",["Transversal eletromagnética","Longitudinal mecânica","Transversal no vácuo"],1,"Som é vibração de partículas na direção da propagação."],["Dobrar a frequência de um som muda principalmente o quê?",["Fica mais agudo","Fica mais forte","Fica mais lento"],0,"Frequência define a altura (grave/agudo)."],["Em qual meio o som é mais rápido?",["Ar","Água","Aço"],2,"Quanto mais rígido o meio, mais rápida a propagação."],["Por que no espaço não se ouve explosões?",["O som é fraco demais","Não há meio material","Faz muito frio"],1,"Ondas mecânicas precisam de meio."],["Qual faixa o ouvido humano percebe?",["20 Hz a 20 kHz","2 Hz a 2 kHz","200 Hz a 200 kHz"],0,"Fora disso: infrassom e ultrassom."],["Uma ambulância se aproxima. O som parece…",["Mais grave","Mais agudo","Igual"],1,"Efeito Doppler: ondas comprimidas à frente da fonte."]];
+const Q=[["O que é o som?",["Uma vibração que viaja","Um tipo de luz","Um cheiro"],0,"Som é vibração se propagando."],["O que o som precisa para viajar?",["Nada","Um meio, como ar ou água","Só luz"],1,"No vácuo não há som."],["Um som agudo tem frequência…",["Alta","Baixa","Zero"],0,"Mais vibrações por segundo deixam o som agudo."],["Amplitude maior deixa o som…",["Mais agudo","Mais forte","Mais lento"],1,"Amplitude é o tamanho da vibração: volume."],["Por que vemos o raio antes de ouvir o trovão?",["A luz é mais rápida que o som","O raio é silencioso","O trovão acontece depois"],0,"A luz viaja muito mais rápido."]];
 let qi=0,qs=0;
-function showQ(){const q=Q[qi],e=$("#quiz");if(!q){const s=qs;e.innerHTML=`<div class="badge">${s>=5?"🏆":s>=3?"🥈":"🎧"}</div><h3 style="text-align:center">Você acertou ${s} de ${Q.length}</h3><p style="margin:auto;text-align:center">${s>=5?"Mestre do Som! Pronto para ensinar a turma.":"Revise as fases e tente de novo."}</p><div class="row" style="justify-content:center"><button id="rq">Jogar de novo</button></div>`;$("#rq").onclick=()=>{qi=0;qs=0;showQ()};if(s>=5)award("quiz",30,"Quiz concluído!");return}
-e.innerHTML=`<span class="fact">Pergunta ${qi+1} de ${Q.length}</span><h3 style="font-size:1.4rem;margin-top:6px">${q[0]}</h3><div class="opts">${q[1].map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("")}</div><p class="fact" id="qe"></p>`;
+function showQ(){const q=Q[qi],e=$("#quiz");if(!q){e.innerHTML=`<div class="badge">${qs>=4?"🏆":"🎧"}</div><h3 style="text-align:center">Você acertou ${qs} de ${Q.length}</h3><div class="row" style="justify-content:center"><button id="rq">Jogar de novo</button></div>`;$("#rq").onclick=()=>{qi=0;qs=0;e.dataset.lock="";showQ()};if(qs>=4)award("quiz",20,"Quiz concluído!");return}
+e.innerHTML=`<span style="color:var(--mut)">Pergunta ${qi+1} de ${Q.length}</span><h3 style="font-size:1.4rem;margin-top:6px">${q[0]}</h3><div class="opts">${q[1].map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("")}</div><p id="qe"></p>`;
 e.querySelector(".opts").onclick=ev=>{const b=ev.target.closest(".opt");if(!b||e.dataset.lock==qi)return;e.dataset.lock=qi;const ok=+b.dataset.i==q[2];b.classList.add(ok?"right":"wrong");if(!ok)e.querySelectorAll(".opt")[q[2]].classList.add("right");else qs++;$("#qe").innerHTML=q[3]+' <button id="nx" style="margin-left:8px">Próxima</button>';$("#nx").onclick=()=>{qi++;showQ()}}}
 showQ();upd2();
-
-(function loop(t){d1(t);dh(t);d2(t);d5(t);requestAnimationFrame(loop)})(0);
+(function loop(t){d1(t);dh(t);d2(t);requestAnimationFrame(loop)})(0);
 </script>
 </body>
 </html>
